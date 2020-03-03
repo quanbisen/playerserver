@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.GroupMapper">
+    <insert id="insert" parameterType="Group" useGeneratedKeys="true" keyProperty="id">
+        insert into t_groups(name,user_id) values (#{name},#{userID});
+    </insert>
+    <select id="queryByUserId" parameterType="String" resultMap="groupResultMap">
+        select * from t_groups where user_id=#{value} order by createtime;
+    </select>
+    <update id="update" parameterType="Group">
+        update t_groups set name=#{name},description=#{description} where user_id=#{userID} and id=#{id};
+    </update>
+    <delete id="delete" parameterType="Group">
+        delete from t_groups where user_id=#{userID} and id=#{id};
+    </delete>
+    <resultMap id="groupResultMap" type="Group">
+        <result property="createTime" column="createtime"></result>
+        <result property="imageURL" column="image_url"></result>
+        <result property="userID" column="user_id"></result>
+    </resultMap>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.SingerMapper">
+
+    <select id="queryAll" resultMap="singerResultMap">
+        select * from t_singers;
+    </select>
+    <select id="queryByName" parameterType="String" resultMap="singerResultMap" useCache="true">
+        select name,image_url from t_singers where name=#{value};
+    </select>
+    <select id="queryById" parameterType="int" resultMap="singerResultMap">
+        select * from t_singers where id=#{id};
+    </select>
+    <select id="queryByNameLike" parameterType="String" resultMap="singerResultMap">
+        select * from t_singers where name like concat('%',#{value},'%');
+    </select>
+    <resultMap id="singerResultMap" type="Singer">
+        <result property="imageURL" column="image_url"></result>
+    </resultMap>
+
+    <insert id="insert" parameterType="Singer">
+        insert into t_singers(name,birthday,height,weight,constellation,description,image_url) values(#{name},#{birthday},#{height},#{weight},#{constellation},#{description},#{imageURL});
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        delete from t_singers where id=#{value};
+    </delete>
+
+    <update id="updateById" parameterType="Singer">
+        update t_singers set
+        <if test="name!=null and name!=''">
+            name=#{name},
+        </if>
+        birthday=#{birthday},height=#{height},weight=#{weight},constellation=#{constellation},description=#{description} where id=#{id};
+    </update>
+
+</mapper>
