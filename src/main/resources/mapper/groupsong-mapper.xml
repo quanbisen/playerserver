@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.GroupSongMapper">
+    <insert id="insert" parameterType="GroupSong">
+        insert into t_groupsongs values(#{groupID},#{songID},#{addTime});
+    </insert>
+    <select id="select" parameterType="GroupSong" resultMap="groupSongResultMap">
+        select * from t_groupsongs where group_id=#{groupID} and song_id=#{songID};
+    </select>
+    <resultMap id="groupSongResultMap" type="GroupSong">
+        <result property="groupID" column="group_id"></result>
+        <result property="songID" column="song_id"></result>
+        <result property="addTime" column="addtime"></result>
+    </resultMap>
+</mapper>

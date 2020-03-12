@@ -9,11 +9,14 @@
     <select id="queryAll" resultMap="songResultMap">
         select * from t_songs
     </select>
-    <select id="queryByNameSingerAlbum" parameterType="String" resultMap="songResultMap">
+    <select id="queryByNameSingerAlbumLike" parameterType="String" resultMap="songResultMap">
         select * from t_songs where name like concat('%',#{value},'%') or singer like concat('%',#{value},'%') or album like concat('%',#{value},'%')
     </select>
     <select id="queryLyric" parameterType="Song" resultMap="songResultMap">
         select lyric_url from t_songs where name=#{name} and singer=#{singer} and album=#{album};
+    </select>
+    <select id="queryByNameSingerAlbum" parameterType="Song" resultMap="songResultMap">
+        select * from t_songs where name=#{name} and singer=#{singer} and album=#{album};
     </select>
     <resultMap id="songResultMap" type="Song">
         <result property="totalTime" column="total_time"></result>

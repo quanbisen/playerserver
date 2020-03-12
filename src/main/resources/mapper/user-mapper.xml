@@ -6,6 +6,9 @@
     <select id="queryById" parameterType="String" resultMap="userResultMap">
         select * from t_users where id=#{value};
     </select>
+    <select id="queryUserAndGroup" parameterType="String" resultMap="userResultMap">
+        select * from t_users where id=#{value};
+    </select>
     <!--插入一个用户User到Users表-->
     <insert id="insert" parameterType="User">
         insert into t_users(id,password,name,image_url) values (#{id},#{password},#{name},#{imageURL});
@@ -20,8 +23,10 @@
     </update>
 
     <resultMap id="userResultMap" type="User">
-        <result property="imageURL" column="image_url"></result>
+        <id property="id" column="id" ></id>
         <result property="loginTime" column="login_time"></result>
+        <result property="imageURL" column="image_url"></result>
+        <collection property="groupList" column="id" ofType="Group" select="com.pojo.GroupMapper.queryByUserId"></collection>
     </resultMap>
 
     <!--根据用户账号ID、Token查询用户-->

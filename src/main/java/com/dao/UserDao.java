@@ -14,4 +14,5 @@ public interface UserDao {
     int insert(User user);
     int updateLoginTime(User user);
     User queryById(String id);
+    User queryUserAndGroup(String id);
 }

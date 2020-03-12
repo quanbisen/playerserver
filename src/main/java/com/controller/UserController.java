@@ -1,7 +1,9 @@
 package com.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.dao.GroupDaoImpl;
 import com.dao.UserDaoImpl;
+import com.pojo.Group;
 import com.pojo.User;
 import com.redis.RedisService;
 import com.response.RegisterResponse;
@@ -39,6 +41,9 @@ public class UserController {
 
     @Autowired
     private UserDaoImpl userDao;
+
+    @Autowired
+    private GroupDaoImpl groupDao;
 
     @PostMapping("/sendAuthenticationCode")
     @ResponseBody
@@ -96,6 +101,13 @@ public class UserController {
                 String imageURL = localPath.replaceAll(localPathPrefix,hostname);
                 user.setImageURL(imageURL);
                 int row = userDao.insert(user);
+                //为用户创建"我喜欢的音乐"歌单
+                Group group = new Group();
+                group.setUserID(email);
+                group.setName("我喜欢的音乐");
+                group.setCreateTime(new Date());
+                group.setFavor(1);  //1表示是"我喜欢的音乐"标记
+                groupDao.insert(group);
                 //删除注册时存储的持久化数据
                 redisService.remove("code_"+email);
                 redisService.remove("password_"+email);

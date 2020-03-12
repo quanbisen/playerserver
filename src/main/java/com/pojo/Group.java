@@ -17,4 +17,5 @@ public class Group {
     private Date createTime;
     private String userID;
     private String imageURL;
+    private int favor;
 }

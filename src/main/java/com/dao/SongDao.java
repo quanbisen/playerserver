@@ -17,6 +17,7 @@ public interface SongDao {
     int deleteByID(int id);
     int update(Song song);
     List<Song> queryAll();
-    List<Song> queryByNameSingerAlbum(String string);
+    List<Song> queryByNameSingerAlbumLike(String string);
     Song queryLyric(Song song);
+    Song queryByNameSingerAlbum(Song song);
 }

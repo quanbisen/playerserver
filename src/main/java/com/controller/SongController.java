@@ -49,15 +49,6 @@ public class SongController {
         return songDao.queryLyric(song);
     }
 
-    @Test
-    public void test(){
-        double sqrt20=Math.sqrt(20);
-        double sqrt10=Math.sqrt(10);
-        double result=(sqrt20+sqrt10)/(sqrt20-sqrt10);
-        result=Math.round(result*10)/10.0;
-        System.out.println(result);
-    }
-
     @PostMapping("/upload")
     @ResponseBody
     public String upload(
@@ -168,7 +159,7 @@ public class SongController {
     @ResponseBody
     public List<Song> queryByName(@PathVariable String string){
         System.out.println(string);
-        return songDao.queryByNameSingerAlbum(string);
+        return songDao.queryByNameSingerAlbumLike(string);
     }
 
     @PostMapping("/update")

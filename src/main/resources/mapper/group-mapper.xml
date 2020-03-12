@@ -4,13 +4,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pojo.GroupMapper">
     <insert id="insert" parameterType="Group" useGeneratedKeys="true" keyProperty="id">
-        insert into t_groups(name,user_id) values (#{name},#{userID});
+        insert into t_groups(name,user_id,favor) values (#{name},#{userID},#{favor});
     </insert>
     <select id="queryByUserId" parameterType="String" resultMap="groupResultMap">
         select * from t_groups where user_id=#{value} order by createtime;
     </select>
     <update id="update" parameterType="Group">
-        update t_groups set name=#{name},description=#{description} where user_id=#{userID} and id=#{id};
+        update t_groups set name=#{name},description=#{description},image_url=#{imageURL} where user_id=#{userID} and id=#{id};
     </update>
     <delete id="delete" parameterType="Group">
         delete from t_groups where user_id=#{userID} and id=#{id};

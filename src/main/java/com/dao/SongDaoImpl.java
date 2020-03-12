@@ -59,9 +59,9 @@ public class SongDaoImpl implements SongDao{
     }
 
     @Override
-    public List<Song> queryByNameSingerAlbum(String string) {
+    public List<Song> queryByNameSingerAlbumLike(String string) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        List<Song> songList = sqlSession.selectList("com.pojo.SongMapper.queryByNameSingerAlbum",string);
+        List<Song> songList = sqlSession.selectList("com.pojo.SongMapper.queryByNameSingerAlbumLike",string);
         sqlSession.close();
         return songList;
     }
@@ -70,6 +70,18 @@ public class SongDaoImpl implements SongDao{
     public Song queryLyric(Song song) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Song> songList = sqlSession.selectList("com.pojo.SongMapper.queryLyric",song);
+        sqlSession.close();
+        if (songList != null && songList.size() > 0){    //如果有多条记录，返回匹配的第一行数据
+            return songList.get(0); //
+        }else {
+            return null;
+        }
+    }
+
+    @Override
+    public Song queryByNameSingerAlbum(Song song) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Song> songList = sqlSession.selectList("com.pojo.SongMapper.queryByNameSingerAlbum",song);
         sqlSession.close();
         if (songList != null && songList.size() > 0){    //如果有多条记录，返回匹配的第一行数据
             return songList.get(0); //
