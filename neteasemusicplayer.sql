@@ -59,7 +59,7 @@ create table t_groupsongs
 (
 group_id bigint,
 song_id bigint,
-addtime datetime default current_timestamp,
+addtime datetime,
 foreign key(group_id) references t_groups(id),
 foreign key(song_id) references t_songs(id)
 );

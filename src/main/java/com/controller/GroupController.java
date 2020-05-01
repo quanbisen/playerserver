@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -64,6 +65,7 @@ public class GroupController {
                 group.setName(name);
                 group.setUserID(id);
                 group.setFavor(0);  //0代表用户自己创建的歌单
+                group.setCreateTime(new Date());    //由Web服务器更新时间
                 int row = groupDao.insert(group);
                 if (row == 1){
                     return JSON.toJSONString(group);
