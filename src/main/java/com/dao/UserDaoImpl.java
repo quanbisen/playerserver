@@ -36,9 +36,9 @@ public class UserDaoImpl implements UserDao{
 
 
     @Override
-    public int updateLoginTime(User user) {
+    public int updateUserByID(User user) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        int row = sqlSession.update("com.pojo.UserMapper.updateLoginTime",user);
+        int row = sqlSession.update("com.pojo.UserMapper.updateUserById",user);
         sqlSession.close();
         return row;
     }
@@ -66,6 +66,5 @@ public class UserDaoImpl implements UserDao{
         sqlSession.close();
         return row;
     }
-
 
 }

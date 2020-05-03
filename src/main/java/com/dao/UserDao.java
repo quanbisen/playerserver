@@ -12,7 +12,7 @@ public interface UserDao {
     User queryUserByIdAndPassword(User user);
     User queryUserByIdToken(User user);
     int insert(User user);
-    int updateLoginTime(User user);
+    int updateUserByID(User user);
     User queryById(String id);
     User queryUserAndGroup(String id);
 }

@@ -7,10 +7,7 @@ import com.pojo.Group;
 import com.pojo.User;
 import com.redis.RedisService;
 import com.response.RegisterResponse;
-import com.util.CutUtils;
-import com.util.EmailUtils;
-import com.util.JwtUtils;
-import com.util.MD5Utils;
+import com.util.*;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +34,7 @@ import java.util.Map;
 public class UserController {
 
     @Value(value = "${server.hostname}")
-    private  String hostname; //hostname,即http://114.116.240.232:8080/server，见SpringBoot的配置文件
+    private  String hostname; //hostname,见SpringBoot的配置文件
 
     @Autowired
     private RedisService redisService;
@@ -137,7 +137,6 @@ public class UserController {
         if (user != null){
             Date date = new Date();
             user.setLoginTime(date);
-            userDao.updateLoginTime(user);     //更新登录时间
             //开始生成令牌
             Map<String,Object> map = new HashMap<>();
             map.put("id",user.getId());
@@ -145,6 +144,7 @@ public class UserController {
             String token = JwtUtils.generateToken(map,date);
             user.setToken(token);
             user.setPassword(null); //清空密码字段
+            userDao.updateUserByID(user);
             return JSON.toJSONString(user);
         }else {
             return "fail";
@@ -173,6 +173,43 @@ public class UserController {
         }catch (ExpiredJwtException expireJwtException){
             return "身份过期";
         }
+    }
+
+    @PostMapping("/update")
+    @ResponseBody
+    public User update(@RequestParam("user") String userString, MultipartHttpServletRequest multipartHttpServletRequest){
+        User user = JSON.parseObject(userString,User.class);
+        MultipartFile imageMultipartFile = multipartHttpServletRequest.getFile("image");
+        if (imageMultipartFile != null){ //如果上传的更新信息存在图片,保存图片
+            String staticRoot = multipartHttpServletRequest.getServletContext().getRealPath("/")+ File.separator + "static";    //静态资源存放路径
+            /**如果存储的目录不存在就创建目录*/
+            File imagePath = new File(staticRoot + File.separator + "image");
+            if (!imagePath.exists()){
+                imagePath.mkdirs();
+            }
+            //拼接子路径
+            String times = TimeUtils.getNowTimeFormatString();
+            String imageFileName = imageMultipartFile.getOriginalFilename();
+            String imageExtendName = imageFileName.substring(imageFileName.lastIndexOf("."));
+            File imageDestination = new File(staticRoot + File.separator + "image" + File.separator + times + imageExtendName);
+            try {
+                imageMultipartFile.transferTo(imageDestination);
+                System.out.println("上传文件-" + imageFileName + "-成功");
+                String imagePathPrefix = CutUtils.cut(imageDestination.toString(),3);
+                System.out.println(imagePathPrefix);
+                String imageURL = imageDestination.toString().replaceAll(imagePathPrefix,hostname);
+                user.setImageURL(imageURL);    //设置图片资源URL
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        int row = userDao.updateUserByID(user);
+        if (row == 1){
+            user = userDao.queryById(user.getId());
+            user.setPassword(null);
+            return user;
+        }
+        return null;
     }
 
 }

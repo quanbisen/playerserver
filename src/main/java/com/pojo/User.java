@@ -22,5 +22,7 @@ public class User {
     private String sex;
     private Date birthday;
     private String imageURL;
+    private String province;
+    private String city;
     private List<Group> groupList;
 }

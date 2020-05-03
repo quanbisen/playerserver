@@ -37,12 +37,14 @@ create table t_users
 id varchar(50) primary key,
 password varchar(50) not null,
 name varchar(50),
-token varchar(50),
+token varchar(255),
 login_time datetime,
 description varchar(500),
 sex varchar(5) default '保密',
 birthday date,
-image_url varchar(255)
+image_url varchar(255),
+province varchar(50),
+city varchar(50)
 );
 create table t_groups
 (

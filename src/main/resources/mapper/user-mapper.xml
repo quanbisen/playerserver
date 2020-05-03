@@ -17,11 +17,22 @@
     <select id="findUserByIdAndPassword" parameterType="User" resultMap="userResultMap">
         select * from t_users where id = #{id} and password=#{password};
     </select>
-    <!--根据ID更新登录的时间-->
-    <update id="updateLoginTime" parameterType="User">
-        update t_users set login_time=#{loginTime} where id=#{id};
+    <!--根据ID更新用户信息-->
+    <update id="updateUserById" parameterType="User">
+        update t_users
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null and name!=''">name=#{name},</if>
+            <if test="token!=null and token!=''">token=#{token},</if>
+            <if test="loginTime!=null">login_time=#{loginTime},</if>
+            <if test="description!=null and description!=''">description=#{description},</if>
+            <if test="sex!=null and sex!=''">sex=#{sex},</if>
+            <if test="birthday!=null">birthday=#{birthday},</if>
+            <if test="imageURL!=null and imageURL!=''">image_url=#{imageURL},</if>
+            <if test="province!=null and province!=''">province=#{province},</if>
+            <if test="city!=null and city!=''">city=#{city},</if>
+        </trim>
+        where id=#{id}
     </update>
-
     <resultMap id="userResultMap" type="User">
         <id property="id" column="id" ></id>
         <result property="loginTime" column="login_time"></result>
@@ -33,7 +44,5 @@
     <select id="findUserByIdToken" parameterType="User" resultMap="userResultMap">
         select * from users where id=#{id} and token=#{token}
     </select>
-
-
 
 </mapper>
