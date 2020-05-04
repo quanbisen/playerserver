@@ -51,13 +51,13 @@ public class UserDaoImpl implements UserDao{
         return user;
     }
 
-    @Override
-    public User queryUserAndGroup(String id) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        User user = sqlSession.selectOne("com.pojo.UserMapper.queryUserAndGroup",id);
-        sqlSession.close();
-        return user;
-    }
+//    @Override
+//    public User queryUserAndGroup(String id) {
+//        SqlSession sqlSession = sqlSessionFactory.openSession();
+//        User user = sqlSession.selectOne("com.pojo.UserMapper.queryUserAndGroup",id);
+//        sqlSession.close();
+//        return user;
+//    }
 
     @Override
     public int insert(User user) {

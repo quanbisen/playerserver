@@ -14,5 +14,5 @@ public interface UserDao {
     int insert(User user);
     int updateUserByID(User user);
     User queryById(String id);
-    User queryUserAndGroup(String id);
+//    User queryUserAndGroup(String id);
 }
