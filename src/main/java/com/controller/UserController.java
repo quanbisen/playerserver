@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dao.GroupDaoImpl;
 import com.dao.UserDaoImpl;
 import com.pojo.Group;
@@ -145,7 +146,7 @@ public class UserController {
             user.setToken(token);
             user.setPassword(null); //清空密码字段
             userDao.updateUserByID(user);
-            return JSON.toJSONString(user);
+            return JSONObject.toJSONString(user);
         }else {
             return "fail";
         }
@@ -164,7 +165,7 @@ public class UserController {
             if (user != null){
                 user.setPassword(null);
                 user.setToken(token);
-                return JSON.toJSONString(user);
+                return JSONObject.toJSONString(user);
             }else {
                 return "fail";
             }

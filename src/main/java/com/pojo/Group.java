@@ -2,6 +2,7 @@ package com.pojo;
 
 import lombok.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author super lollipop
@@ -18,4 +19,5 @@ public class Group {
     private String userID;
     private String imageURL;
     private int favor;
+    private List<GroupSongDetail> groupSongDetailList;
 }

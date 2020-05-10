@@ -1,6 +1,7 @@
 package com.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dao.GroupDaoImpl;
 import com.pojo.Group;
 import com.util.CutUtils;
@@ -123,7 +124,7 @@ public class GroupController {
         }
         int row = groupDao.update(group);
         if (row == 1){
-            return "保存成功";
+            return JSONObject.toJSONString(groupDao.queryByID(group.getId()));
         }else {
             return "保存失败";
         }

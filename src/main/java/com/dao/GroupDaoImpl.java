@@ -44,6 +44,14 @@ public class GroupDaoImpl implements GroupDao{
     }
 
     @Override
+    public Group queryByID(int id) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        Group group = sqlSession.selectOne("com.pojo.GroupMapper.queryById",id);
+        sqlSession.close();
+        return group;
+    }
+
+    @Override
     public int delete(Group group) {
         try {
             SqlSession sqlSession = sqlSessionFactory.openSession();

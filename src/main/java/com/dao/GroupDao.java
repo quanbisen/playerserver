@@ -13,6 +13,7 @@ import java.util.List;
 public interface GroupDao {
     int insert(Group group);
     List<Group> queryByUserID(String userID);
+    Group queryByID(int id);
     int delete(Group group);
     int update(Group group);
 }

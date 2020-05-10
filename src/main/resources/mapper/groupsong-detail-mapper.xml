@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.GroupSongDetailMapper">
+    <select id="queryByGroupId" parameterType="int" resultMap="groupSongDetailMap">
+        select t_songs.*,t_groupsongs.addtime from t_songs,t_groupsongs where id=t_groupsongs.song_id and id in (select song_id from t_groupsongs where group_id = #{value})
+    </select>
+    <resultMap id="groupSongDetailMap" type="GroupSongDetail">
+        <result property="totalTime" column="total_time"></result>
+        <result property="resourceURL" column="resource_url"></result>
+        <result property="lyricURL" column="lyric_url"></result>
+        <result property="albumURL" column="album_url"></result>
+        <result property="addTime" column="addtime"></result>
+    </resultMap>
+</mapper>

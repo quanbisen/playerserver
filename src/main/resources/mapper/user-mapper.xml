@@ -6,9 +6,6 @@
     <select id="queryById" parameterType="String" resultMap="userResultMap">
         select * from t_users where id=#{value};
     </select>
-<!--    <select id="queryUserAndGroup" parameterType="String" resultMap="userResultMap">-->
-<!--        select * from t_users where id=#{value};-->
-<!--    </select>-->
     <!--插入一个用户User到Users表-->
     <insert id="insert" parameterType="User">
         insert into t_users(id,password,name,image_url) values (#{id},#{password},#{name},#{imageURL});

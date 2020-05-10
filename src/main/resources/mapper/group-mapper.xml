@@ -7,7 +7,10 @@
         insert into t_groups(name,user_id,createtime,favor) values (#{name},#{userID},#{createTime},#{favor});
     </insert>
     <select id="queryByUserId" parameterType="String" resultMap="groupResultMap">
-        select * from t_groups where user_id=#{value} order by createtime;
+        select * from t_groups where user_id=#{value};
+    </select>
+    <select id="queryById" parameterType="int" resultMap="groupResultMap">
+        select * from t_groups where id=#{id}
     </select>
     <update id="update" parameterType="Group">
         update t_groups
@@ -22,8 +25,10 @@
         delete from t_groups where user_id=#{userID} and id=#{id};
     </delete>
     <resultMap id="groupResultMap" type="Group">
+        <id property="id" column="id"></id>
         <result property="createTime" column="createtime"></result>
         <result property="imageURL" column="image_url"></result>
         <result property="userID" column="user_id"></result>
+        <collection property="groupSongDetailList" column="id" ofType="GroupSongDetail" select="com.pojo.GroupSongDetailMapper.queryByGroupId"></collection>
     </resultMap>
 </mapper>
