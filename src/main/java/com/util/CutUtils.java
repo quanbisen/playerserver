@@ -1,7 +1,5 @@
 package com.util;
 
-import org.junit.Test;
-
 /**
  * @author super lollipop
  * @date 20-2-24

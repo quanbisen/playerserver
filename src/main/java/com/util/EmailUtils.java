@@ -4,9 +4,7 @@ import com.config.EmailConfig;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 
@@ -54,6 +52,5 @@ public class EmailUtils {
     public static String generateCode(){
         return String.valueOf((int)((Math.random()*9+1)*100000));
     }
-
 
 }

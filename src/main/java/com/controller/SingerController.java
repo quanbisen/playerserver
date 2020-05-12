@@ -33,9 +33,6 @@ public class SingerController {
     @Autowired
     private SingerDaoImpl singerDao;
 
-    @Value(value = "${server.hostname}")
-    private  String hostname; //hostname,即http://114.116.240.232:8080/server，见SpringBoot的配置文件
-
     @GetMapping("/queryAll")
     @ResponseBody
     public List<Singer> queryAll(HttpServletRequest request){
