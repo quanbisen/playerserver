@@ -40,6 +40,7 @@ create table t_albums
 (
 id bigint unsigned primary key auto_increment,
 name varchar(255),
+publish_time datetime,
 description varchar(500),
 singer_id bigint unsigned,
 image_url varchar(255),

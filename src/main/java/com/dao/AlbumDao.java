@@ -12,7 +12,10 @@ import java.util.Map;
  */
 @Repository
 public interface AlbumDao {
-    void insert(Album album);
-    Album queryAlbumByName(String name);
-    Map<String,String> queryAlbumMap(List<String> albumList);
+    List<Album> queryAll();
+    int insert(Album album);
+    List<Album> queryByName(String name);
+    List<Album> queryByNameLike(String name);
+    int deleteByID(int id);
+    int update(Album album);
 }

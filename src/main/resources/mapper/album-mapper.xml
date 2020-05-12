@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pojo.AlbumMapper">
+    <select id="queryAll" resultMap="albumResultMap">
+        select t_albums.*,t_singers.name singer_name from t_albums,t_singers where t_albums.singer_id = t_singers.id
+    </select>
+    <select id="queryByNameLike" parameterType="String" resultMap="albumResultMap">
+        select t_albums.*,t_singers.name singer_name from t_albums,t_singers where t_albums.singer_id = t_singers.id and t_albums.name like concat('%',#{value},'%')
+    </select>
+    <!--be used for player client -->
+    <select id="queryByName" parameterType="String" resultMap="albumResultMap">
+        select id,image_url from t_albums where name=#{value}
+    </select>
+    <insert id="insert" parameterType="Album" >
+        insert into t_albums(name,publish_time,description,singer_id,image_url) values(#{name},#{publishTime},#{description},#{singerID},#{imageURL})
+    </insert>
+    <update id="update" parameterType="Album">
+        update t_albums
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null and name!=''">name=#{name},</if>
+            <if test="publishTime!=null">publish_time=#{publishTime},</if>
+            <if test="description!=null and description!=''">description=#{description},</if>
+        </trim>
+        where id=#{id}
+    </update>
+    <delete id="deleteById" parameterType="int">
+        delete from t_albums where id=#{id}
+    </delete>
+
+    <resultMap id="albumResultMap" type="Album">
+        <id property="id" column="id"></id>
+        <result property="singerID" column="singer_id"></result>
+        <result property="singerName" column="singer_name"></result>
+        <result property="publishTime" column="publish_time"></result>
+        <result property="imageURL" column="image_url"></result>
+    </resultMap>
+</mapper>

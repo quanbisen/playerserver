@@ -3,14 +3,8 @@ package com.dao;
 import com.pojo.Album;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileFilter;
 import java.util.*;
 
 /**
@@ -20,87 +14,61 @@ import java.util.*;
 @Repository
 public class AlbumDaoImpl implements AlbumDao{
 
-    /**注入MyBatis的SqlSessionFactory对象*/
-    @Resource
+
     private SqlSessionFactory sqlSessionFactory;
 
-    @Override
-    public void insert(Album album) {
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        System.out.println(sqlSession.insert("model.AlbumMapper.insertAlbum",album));
-        sqlSession.close();
+    /**注入MyBatis的SqlSessionFactory对象*/
+    @Autowired
+    public void constructor(SqlSessionFactory sqlSessionFactory){
+        this.sqlSessionFactory = sqlSessionFactory;
     }
 
     @Override
-    public Album queryAlbumByName(String name) {
+    public List<Album> queryAll() {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-        Album album = sqlSession.selectOne("model.AlbumMapper.findAlbumByName",name);
+        List<Album> albumList = sqlSession.selectList("com.pojo.AlbumMapper.queryAll");
         sqlSession.close();
-        return album;
+        return albumList;
     }
 
     @Override
-    public Map<String, String> queryAlbumMap(List<String> albumList) {
+    public int insert(Album album) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
-//        Map<String, HashMap<String,String>> map = sqlSession.selectMap("model.AlbumMapper.queryAlbumMap",albumList,"name");
-//        sqlSession.close();
-//        Map<String,String> singerMap = new HashMap<>();
-//        map.keySet().forEach(s -> {
-//            singerMap.put(s,map.get(s).get("image_url_58"));
-//        });
-        Map<String,String> singerMap = new HashMap<>();
-        albumList.forEach(name->{
-            try {
-                Album album = sqlSession.selectOne("model.AlbumMapper.findAlbumByName",name);
-                System.out.println(album.toString());
-                if (album!=null){
-                    singerMap.put(name,album.getImageURL());
-                }
-            }catch (Exception e){e.printStackTrace();}
-
-        });
+        int row = sqlSession.insert("com.pojo.AlbumMapper.insert",album);
         sqlSession.close();
-        return singerMap;
+        return row;
     }
 
-    @Test
-    public void testQueryAlbumMap(){
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/config/application-context.xml");
-        List<String> list = new ArrayList<>();
-        list.add("不如吃茶去");
-        list.add("18");
-        Map<String,String> singerListMap = applicationContext.getBean(AlbumDao.class).queryAlbumMap(list);
-        Set<String> set = singerListMap.keySet();
-        set.forEach(s -> {
-            System.out.println(s + "-->" + singerListMap.get(s));
-        });
+    @Override
+    public List<Album> queryByName(String name) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Album> albumList = sqlSession.selectList("com.pojo.AlbumMapper.queryByName",name);
+        sqlSession.close();
+        return albumList;
     }
 
-    @Test
-    public void insertTest(){
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/config/application-context.xml");
-        File file = new File("/media/ubuntu/Documents/IntelliJProject/neteasemusicplayerserver/web/image/album");
-        File[] files = file.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.isFile();
-            }
-        });
-        for (int i = 0; i < files.length; i++) {
-            String path = files[i].getPath();
-            path = path.substring(path.lastIndexOf("/"));
-            String albumName = path.substring(path.lastIndexOf("/")+1,path.indexOf("."));
-            String imageURL = "http://114.116.240.232:8080/neteasemusicplayerserver/image/album" + path;
-            System.out.println(albumName);
-            Album album = new Album(null,albumName,imageURL);
-            applicationContext.getBean(AlbumDao.class).insert(album);
-        }
+    @Override
+    public List<Album> queryByNameLike(String name) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Album> albumList = sqlSession.selectList("com.pojo.AlbumMapper.queryByNameLike",name);
+        sqlSession.close();
+        return albumList;
     }
 
-    @Test
-    public void findAlbumByNameTest(){
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/config/application-context.xml");
-        Album album = applicationContext.getBean(AlbumDao.class).queryAlbumByName("18");
-        System.out.println(album.getImageURL());
+    @Override
+    public int deleteByID(int id) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int row = sqlSession.delete("com.pojo.AlbumMapper.deleteById",id);
+        sqlSession.close();
+        return row;
     }
+
+    @Override
+    public int update(Album album) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        int row = sqlSession.update("com.pojo.AlbumMapper.update",album);
+        sqlSession.close();
+        return row;
+    }
+
 }

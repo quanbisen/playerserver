@@ -7,17 +7,11 @@ import com.util.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,12 +24,17 @@ public class SingerController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SingerController.class);
 
-    @Autowired
+
     private SingerDaoImpl singerDao;
+
+    @Autowired
+    public void constructor(SingerDaoImpl singerDao){
+        this.singerDao = singerDao;
+    }
 
     @GetMapping("/queryAll")
     @ResponseBody
-    public List<Singer> queryAll(HttpServletRequest request){
+    public List<Singer> queryAll(){
         LOGGER.info("queryAll");
         return singerDao.queryAll();
     }
