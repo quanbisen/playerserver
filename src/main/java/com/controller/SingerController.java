@@ -24,7 +24,6 @@ public class SingerController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SingerController.class);
 
-
     private SingerDaoImpl singerDao;
 
     @Autowired
@@ -71,12 +70,14 @@ public class SingerController {
         return String.valueOf(row);
     }
 
-    @GetMapping("/query/{string}")
+    @PostMapping("/queryByNameLike")
     @ResponseBody
-    public List<Singer> queryByNameLike(@PathVariable String string){
+    public List<Singer> queryByNameLike(@RequestParam("name") String name){
         LOGGER.info("queryByNameLike");
-        return singerDao.queryByNameLike(string);
+        return singerDao.queryByNameLike(name);
     }
+
+
 
     @GetMapping("/queryByName/{string}")
     @ResponseBody

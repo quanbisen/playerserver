@@ -4,6 +4,7 @@ import com.config.ServerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -14,17 +15,15 @@ import java.io.IOException;
  * @author super lollipop
  * @date 5/4/20
  */
+@Component
 public class FileUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUtils.class);
 
-    @Autowired
-    private ServerConfig serverConfig;
-
     private static ServerConfig SERVER_CONFIG;
 
-    @PostConstruct
-    public void init(){
+    @Autowired
+    public void constructor(ServerConfig serverConfig){
         SERVER_CONFIG = serverConfig;
     }
 
@@ -38,7 +37,9 @@ public class FileUtils {
             multipartFile.transferTo(destination);
             LOGGER.info("上传成功");
             String prefix = CutUtils.cut(destination.toString(),3);
-            String URL = destination.toString().replaceAll(prefix,SERVER_CONFIG.getHostname());
+            String prefixFormat = prefix.replaceAll("\\\\","/");
+            String formatPath = destination.getPath().replaceAll("\\\\","/");
+            String URL = formatPath.replaceAll(prefixFormat,SERVER_CONFIG.getHostname());
             return URL;
         }catch (IOException e){
             e.printStackTrace();

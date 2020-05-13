@@ -1,5 +1,7 @@
 package com.util;
 
+import java.io.File;
+
 /**
  * @author super lollipop
  * @date 20-2-24
@@ -13,7 +15,7 @@ public class CutUtils {
     public static String cut(String string,int count){
         StringBuffer stringBuffer = new StringBuffer(string);
         for (int i=0;i<count;i++) {
-            string = stringBuffer.substring(0,string.lastIndexOf("/"));
+            string = stringBuffer.substring(0,string.lastIndexOf(File.separator));
             stringBuffer = new StringBuffer(string);
         }
         return stringBuffer.toString();

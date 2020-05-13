@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,6 +41,7 @@ public class AlbumController {
     @PostMapping("/queryByName")
     @ResponseBody
     public List<Album> queryByName(@RequestParam("name") String name){
+        System.out.println(name);
         return albumDao.queryByName(name);
     }
 
@@ -51,10 +53,11 @@ public class AlbumController {
 
     @PostMapping("/insert")
     @ResponseBody
-    public String insert(@RequestParam("album") String albumString, @RequestParam("bytes") MultipartFile multipartFile, HttpServletRequest request){
+    public String insert(@RequestParam("album") String albumString, @RequestParam("imageBytes") MultipartFile multipartFile, HttpServletRequest request){
         Album album = JSONObject.parseObject(albumString,Album.class);
         /**上传文件*/
         String imageURL = FileUtils.upload(multipartFile,request);
+        album.setPublishTime(new Date());
         album.setImageURL(imageURL);
         int row = albumDao.insert(album);
         if (row == 1){
