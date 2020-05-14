@@ -15,8 +15,12 @@ import java.util.List;
 @Repository
 public class SongDaoImpl implements SongDao{
 
-    @Autowired
     private SqlSessionFactory sqlSessionFactory;
+
+    @Autowired
+    public void constructor(SqlSessionFactory sqlSessionFactory){
+        this.sqlSessionFactory = sqlSessionFactory;
+    }
 
     @Override
     public int insert(Song song) {

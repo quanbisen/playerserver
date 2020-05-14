@@ -1,6 +1,8 @@
 package com.pojo;
 
 import lombok.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author super lollipop
@@ -12,10 +14,14 @@ import lombok.*;
 public class Song {
     private Integer id;
     private String name;
-    private String singer;
-    private String album;
+    private Album albumObject;
+    private String albumName;
+    private List<Singer> singerList;
     private String totalTime;
     private String size;
+    private Date publishTime;
+    private Integer albumID;
+    private Date collectTime;
     private String resourceURL;
     private String lyricURL;
     private String albumURL;

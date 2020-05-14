@@ -27,7 +27,7 @@ public class AlbumController {
     private AlbumDaoImpl albumDao;
 
     @Autowired
-    public void constructor(AlbumDaoImpl albumDao){
+    public void constructor(AlbumDaoImpl albumDao) {
         this.albumDao = albumDao;
     }
 
@@ -67,10 +67,13 @@ public class AlbumController {
         }
     }
 
-    @PostMapping("update")
+    @PostMapping("/update")
     @ResponseBody
-    public String update(@RequestParam("album") String albumString){
+    public String update(@RequestParam("album") String albumString,@RequestParam("imageBytes") MultipartFile multipartFile, HttpServletRequest request){
         Album album = JSONObject.parseObject(albumString,Album.class);
+        /**上传文件*/
+        String imageURL = FileUtils.upload(multipartFile,request);
+        album.setImageURL(imageURL);
         int row = albumDao.update(album);
         if (row == 1){
             return "success";

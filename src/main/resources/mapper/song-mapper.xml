@@ -7,7 +7,7 @@
         select * from t_songs where id=#{value}
     </select>
     <select id="queryAll" resultMap="songResultMap">
-        select * from t_songs
+        select t_songs.*,t_albums.name collect_album_name,t_albums.id album_id from t_songs left join t_albums on t_songs.album_id=t_albums.id
     </select>
     <select id="queryByNameSingerAlbumLike" parameterType="String" resultMap="songResultMap">
         select * from t_songs where name like concat('%',#{value},'%') or singer like concat('%',#{value},'%') or album like concat('%',#{value},'%')
@@ -19,10 +19,19 @@
         select * from t_songs where name=#{name} and singer=#{singer} and album=#{album};
     </select>
     <resultMap id="songResultMap" type="Song">
+        <id property="id" column="id"></id>
+        <result property="albumName" column="album_name"></result>
         <result property="totalTime" column="total_time"></result>
+        <result property="publishTime" column="publish_time"></result>
+        <result property="albumID" column="album_id"></result>
+        <result property="collectTime" column="collect_time"></result>
         <result property="resourceURL" column="resource_url"></result>
         <result property="lyricURL" column="lyric_url"></result>
         <result property="albumURL" column="album_url"></result>
+        <association property="albumObject" javaType="Album">
+            <id property="id" column="t_albums.id"></id>
+            <result property="name" column="collect_album_name"></result>
+        </association>
     </resultMap>
 
     <insert id="insert" parameterType="Song">

@@ -34,7 +34,8 @@ height float,
 weight float,
 constellation varchar(50),
 description varchar(500),
-image_url varchar(255)
+image_url varchar(255),
+fulltext index index1_singer_name(name) 
 )engine InnoDB comment '歌手信息表';
 create table t_albums
 (
@@ -44,12 +45,14 @@ publish_time datetime,
 description varchar(500),
 singer_id bigint unsigned,
 image_url varchar(255),
-foreign key(singer_id) references t_singers(id)
+foreign key(singer_id) references t_singers(id),
+fulltext index index2_album_name(name) 
 )engine InnoDB comment '专辑信息表';
 create table t_songs
 (
 id bigint unsigned primary key auto_increment,
 name varchar (255),
+album_name varchar(255),
 total_time varchar(50),
 size varchar(50),
 publish_time datetime,
@@ -57,7 +60,9 @@ album_id bigint unsigned,
 collect_time datetime,
 resource_url varchar (255),
 lyric_url varchar (255),
-foreign key(album_id) references t_albums(id)
+album_url varchar(255),
+foreign key(album_id) references t_albums(id),
+fulltext index index3_song_name(name) 
 )engine InnoDB comment '歌曲信息表';
 create table t_groupsongs
 (
@@ -75,3 +80,12 @@ song_id bigint unsigned,
 foreign key(singer_id) references t_singers(id),
 foreign key(song_id) references t_songs(id)
 )engine InnoDB comment '歌手歌曲中间表';
+
+select t_songs.*,t_albums.name 收录专辑名,t_song_singer.name 歌手 from t_songs left join t_albums on t_songs.album_id=t_albums.id
+right join (select t_singersongs.song_id,t_singers.name from t_singers join t_singersongs on t_singers.id=t_singersongs.singer_id) t_song_singer on t_songs.id=t_song_singer.song_id;
+select t_singersongs.song_id,t_singers.name from t_singers join t_singersongs on t_singers.id=t_singersongs.singer_id;
+describe t_singers;
+describe t_singersongs;
+describe t_albums;
+insert into t_singersongs(singer_id,song_id) values(9,1);
+
