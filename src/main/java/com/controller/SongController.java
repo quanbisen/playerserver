@@ -44,6 +44,7 @@ public class SongController {
     @GetMapping("/queryAll")
     @ResponseBody
     public List<Song> queryAll(){
+        LOGGER.info("queryAll");
         return songDao.queryAll();
     }
 
@@ -106,11 +107,12 @@ public class SongController {
         }
     }
 
-    @GetMapping("/query/{string}")
+    @PostMapping("/queryByNameSingerAlbumLike")
     @ResponseBody
-    public List<Song> queryByName(@PathVariable String string){
-        System.out.println(string);
-        return songDao.queryByNameSingerAlbumLike(string);
+    public List<Song> queryByName(@RequestParam("key") String key){
+        System.out.println(key);
+        LOGGER.info("queryByNameSingerAlbumLike");
+        return songDao.queryByNameSingerAlbumLike(key);
     }
 
     @PostMapping("queryByNameLike")

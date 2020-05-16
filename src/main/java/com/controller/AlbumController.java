@@ -41,7 +41,7 @@ public class AlbumController {
     @PostMapping("/queryByName")
     @ResponseBody
     public List<Album> queryByName(@RequestParam("name") String name){
-        System.out.println(name);
+        LOGGER.info("queryByName");
         return albumDao.queryByName(name);
     }
 
@@ -84,7 +84,7 @@ public class AlbumController {
 
     @DeleteMapping("/delete/{id}")
     @ResponseBody
-    public String DeleteByID(@PathVariable("id") int id){
+    public String deleteByID(@PathVariable("id") int id){
         int row = albumDao.deleteByID(id);
         if (row == 1){
             return "success";

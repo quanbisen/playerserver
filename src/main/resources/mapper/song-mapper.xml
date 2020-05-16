@@ -14,7 +14,11 @@
         on t_songs.id=t_song_singer.song_id;
     </select>
     <select id="queryByNameSingerAlbumLike" parameterType="String" resultMap="songResultMap">
-        select * from t_songs where name like concat('%',#{value},'%') or singer like concat('%',#{value},'%') or album like concat('%',#{value},'%')
+        select t_songs.*,t_albums.name collect_album_name,t_albums.id album_id,t_albums.image_url album_image_url,t_song_singer.singer_id singer_id,t_song_singer.name singer_name
+        from t_songs left join t_albums on t_songs.album_id=t_albums.id
+        inner join
+        (select t_singersongs.song_id,t_singers.id singer_id, t_singers.name from t_singers join t_singersongs on t_singers.id=t_singersongs.singer_id) t_song_singer
+        on t_songs.id=t_song_singer.song_id where t_songs.name like concat('%',#{value},'%') or t_song_singer.name like concat('%',#{value},'%') or album_name like concat('%',#{value},'%');
     </select>
     <select id="queryByNameLike" parameterType="String" resultMap="songResultMap">
         select t_songs.*,t_albums.name collect_album_name,t_albums.id album_id,t_albums.image_url album_image_url,t_song_singer.singer_id singer_id,t_song_singer.name singer_name

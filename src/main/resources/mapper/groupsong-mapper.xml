@@ -12,6 +12,6 @@
     <resultMap id="groupSongResultMap" type="GroupSong">
         <result property="groupID" column="group_id"></result>
         <result property="songID" column="song_id"></result>
-        <result property="addTime" column="addtime"></result>
+        <result property="addTime" column="add_time"></result>
     </resultMap>
 </mapper>

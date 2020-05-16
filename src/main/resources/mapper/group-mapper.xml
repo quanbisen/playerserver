@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pojo.GroupMapper">
     <insert id="insert" parameterType="Group" useGeneratedKeys="true" keyProperty="id">
-        insert into t_groups(name,user_id,createtime,favor) values (#{name},#{userID},#{createTime},#{favor});
+        insert into t_groups(name,user_id,create_time,favor) values (#{name},#{userID},#{createTime},#{favor});
     </insert>
     <select id="queryByUserId" parameterType="String" resultMap="groupResultMap">
         select * from t_groups where user_id=#{value};
@@ -26,7 +26,7 @@
     </delete>
     <resultMap id="groupResultMap" type="Group">
         <id property="id" column="id"></id>
-        <result property="createTime" column="createtime"></result>
+        <result property="createTime" column="create_time"></result>
         <result property="imageURL" column="image_url"></result>
         <result property="userID" column="user_id"></result>
         <collection property="groupSongDetailList" column="id" ofType="GroupSongDetail" select="com.pojo.GroupSongDetailMapper.queryByGroupId"></collection>

@@ -79,11 +79,11 @@ public class SingerController {
 
 
 
-    @GetMapping("/queryByName/{string}")
+    @PostMapping("/queryByName")
     @ResponseBody
-    public List<Singer> queryByName(@PathVariable String string){
+    public List<Singer> queryByName(@RequestParam("name") String name){
         LOGGER.info("queryByName");
-        return singerDao.queryByName(string);
+        return singerDao.queryByName(name);
     }
 
     @PostMapping("/update")

@@ -81,17 +81,3 @@ foreign key(singer_id) references t_singers(id),
 foreign key(song_id) references t_songs(id)
 )engine InnoDB comment '歌手歌曲中间表';
 
-select t_songs.*,t_albums.name 收录专辑名,t_song_singer.name 歌手 from t_songs left join t_albums on t_songs.album_id=t_albums.id
-right join (select t_singersongs.song_id,t_singers.name from t_singers join t_singersongs on t_singers.id=t_singersongs.singer_id) t_song_singer on t_songs.id=t_song_singer.song_id;
-select t_singersongs.song_id,t_singers.name from t_singers join t_singersongs on t_singers.id=t_singersongs.singer_id;
-describe t_singers;
-describe t_singersongs;
-describe t_albums;
-describe t_songs;
-insert into t_singersongs(singer_id,song_id) values(8,2);
-
-select t_songs.*,t_albums.name collect_album_name,t_albums.id album_id,t_albums.image_url album_image_url,t_song_singer.singer_id singer_id,t_song_singer.name singer_name 
-from t_songs left join t_albums on t_songs.album_id=t_albums.id
-inner join
-(select t_singersongs.song_id,t_singers.id singer_id, t_singers.name from t_singers join t_singersongs on t_singers.id=t_singersongs.singer_id) t_song_singer 
-on t_songs.id=t_song_singer.song_id;
