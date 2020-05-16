@@ -7,10 +7,21 @@
         select * from t_songs where id=#{value}
     </select>
     <select id="queryAll" resultMap="songResultMap">
-        select t_songs.*,t_albums.name collect_album_name,t_albums.id album_id from t_songs left join t_albums on t_songs.album_id=t_albums.id
+        select t_songs.*,t_albums.name collect_album_name,t_albums.id album_id,t_albums.image_url album_image_url,t_song_singer.singer_id singer_id,t_song_singer.name singer_name
+        from t_songs left join t_albums on t_songs.album_id=t_albums.id
+        inner join
+        (select t_singersongs.song_id,t_singers.id singer_id, t_singers.name from t_singers join t_singersongs on t_singers.id=t_singersongs.singer_id) t_song_singer
+        on t_songs.id=t_song_singer.song_id;
     </select>
     <select id="queryByNameSingerAlbumLike" parameterType="String" resultMap="songResultMap">
         select * from t_songs where name like concat('%',#{value},'%') or singer like concat('%',#{value},'%') or album like concat('%',#{value},'%')
+    </select>
+    <select id="queryByNameLike" parameterType="String" resultMap="songResultMap">
+        select t_songs.*,t_albums.name collect_album_name,t_albums.id album_id,t_albums.image_url album_image_url,t_song_singer.singer_id singer_id,t_song_singer.name singer_name
+        from t_songs left join t_albums on t_songs.album_id=t_albums.id
+        inner join
+        (select t_singersongs.song_id,t_singers.id singer_id, t_singers.name from t_singers join t_singersongs on t_singers.id=t_singersongs.singer_id) t_song_singer
+        on t_songs.id=t_song_singer.song_id where t_songs.name like concat('%',#{value},'%');
     </select>
     <select id="queryLyric" parameterType="Song" resultMap="songResultMap">
         select lyric_url from t_songs where name=#{name} and singer=#{singer} and album=#{album};
@@ -20,8 +31,10 @@
     </select>
     <resultMap id="songResultMap" type="Song">
         <id property="id" column="id"></id>
+        <result property="name" column="name"></result>
         <result property="albumName" column="album_name"></result>
         <result property="totalTime" column="total_time"></result>
+        <result property="size" column="size"></result>
         <result property="publishTime" column="publish_time"></result>
         <result property="albumID" column="album_id"></result>
         <result property="collectTime" column="collect_time"></result>
@@ -29,13 +42,18 @@
         <result property="lyricURL" column="lyric_url"></result>
         <result property="albumURL" column="album_url"></result>
         <association property="albumObject" javaType="Album">
-            <id property="id" column="t_albums.id"></id>
+            <id property="id" column="album_id"></id>
             <result property="name" column="collect_album_name"></result>
+            <result property="imageURL" column="album_image_url"></result>
         </association>
+        <collection property="singerList" ofType="Singer">
+            <id property="id" column="singer_id"></id>
+            <result property="name" column="singer_name"></result>
+        </collection>
     </resultMap>
 
-    <insert id="insert" parameterType="Song">
-        insert into t_songs(name,singer,album,total_time,size,resource_url,lyric_url,album_url) values (#{name},#{singer},#{album},#{totalTime},#{size},#{resourceURL},#{lyricURL},#{albumURL})
+    <insert id="insert" parameterType="Song" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into t_songs(name,album_name,total_time,size,publish_time,album_id,collect_time,resource_url,lyric_url,album_url) values (#{name},#{albumName},#{totalTime},#{size},#{publishTime},#{albumID},#{collectTime},#{resourceURL},#{lyricURL},#{albumURL})
     </insert>
     <delete id="deleteById" parameterType="int">
         delete from t_songs where id=#{value}

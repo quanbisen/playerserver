@@ -71,6 +71,14 @@ public class SongDaoImpl implements SongDao{
     }
 
     @Override
+    public List<Song> queryByNameLike(String name) {
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        List<Song> songList = sqlSession.selectList("com.pojo.SongMapper.queryByNameLike",name);
+        sqlSession.close();
+        return songList;
+    }
+
+    @Override
     public Song queryLyric(Song song) {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         List<Song> songList = sqlSession.selectList("com.pojo.SongMapper.queryLyric",song);

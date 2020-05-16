@@ -18,6 +18,7 @@ public interface SongDao {
     int update(Song song);
     List<Song> queryAll();
     List<Song> queryByNameSingerAlbumLike(String string);
+    List<Song> queryByNameLike(String name);
     Song queryLyric(Song song);
     Song queryByNameSingerAlbum(Song song);
 }

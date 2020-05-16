@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -47,15 +48,20 @@ public class FileUtils {
         return "";
     }
 
-    public static String delete(String URL,HttpServletRequest request){
-        File file = new File( getStaticPath(request) + File.separator + "image" + URL.substring(URL.lastIndexOf("/")));
-        if (file.exists()){
-            file.delete();
-            LOGGER.info("删除文件成功");
+    public static String delete(String URL,String subFolder,HttpServletRequest request){
+        if (!StringUtils.isEmpty(URL)){
+            File file = new File( getStaticPath(request) + File.separator + subFolder + URL.substring(URL.lastIndexOf("/")));
+            if (file.exists()){
+                file.delete();
+                LOGGER.info("删除文件成功");
+                return "success";
+            }else {
+                LOGGER.info("没有找到资源文件");
+            }
         }else {
-            LOGGER.info("没有找到资源文件");
+            LOGGER.info("资源文件为空");
         }
-        return "";
+        return "fail";
     }
 
     private static String getStaticPath(HttpServletRequest request){

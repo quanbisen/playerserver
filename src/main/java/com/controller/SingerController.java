@@ -65,7 +65,7 @@ public class SingerController {
     public String delete(@PathVariable int id, HttpServletRequest request){
         LOGGER.info("delete");
         Singer singer = singerDao.queryByID(id);  //查询出来，然后执行删除资源文件
-        FileUtils.delete(singer.getImageURL(),request);
+        FileUtils.delete(singer.getImageURL(),"image",request);
         int row = singerDao.deleteByID(id);
         return String.valueOf(row);
     }
